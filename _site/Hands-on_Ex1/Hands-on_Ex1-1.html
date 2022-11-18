@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ISSS624 - Hands-on Exercise 1: Geospatial Data Wrangling with R</title>
+<title>ISSS624 - Hands-on Exercise 1-1: Geospatial Data Wrangling with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -146,8 +146,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hands-on Exercise</a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
         <li>
-    <a class="dropdown-item" href="../Hands-on_Ex1/Hands-on_Ex1.html">
- <span class="dropdown-text">Hands-on Exercise 1</span></a>
+    <a class="dropdown-item" href="../Hands-on_Ex1/Hands-on_Ex1-1.html">
+ <span class="dropdown-text">Hands-on Exercise 1-1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands-on_Ex1/Hands-on_Ex1-2.html">
+ <span class="dropdown-text">Hands-on Exercise 1-2</span></a>
   </li>  
     </ul>
   </li>
@@ -213,7 +217,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands-on Exercise 1: Geospatial Data Wrangling with R</h1>
+<h1 class="title">Hands-on Exercise 1-1: Geospatial Data Wrangling with R</h1>
 </div>
 
 
@@ -386,19 +390,19 @@ Projected CRS: SVY21
 all</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex1-1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(mpsz))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex1-1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mpsz[<span class="st">"PLN_AREA_N"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex1-1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -643,7 +647,7 @@ Projected CRS: SVY21 / Singapore TM
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(mpsz3414<span class="sc">$</span><span class="st">`</span><span class="at">PreSch Density</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex1_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex1-1_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -657,7 +661,7 @@ Projected CRS: SVY21 / Singapore TM
 <span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Pre-school density (per km sq)"</span>,</span>
 <span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex1_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex1-1_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
@@ -668,7 +672,7 @@ Projected CRS: SVY21 / Singapore TM
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Pre-school density (per km sq)"</span>,</span>
 <span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Pre-school count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Hands-on_Ex1_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+<p><img src="Hands-on_Ex1-1_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
