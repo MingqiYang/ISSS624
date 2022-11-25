@@ -3,11 +3,13 @@ title: "Hands-on Exercise 1-1: Geospatial Data Wrangling with R"
 editor: visual
 ---
 
-## Overview
+# Chapter 1: Geospatial Data Wrangling with R
+
+## 1 Overview
 
 In this hands-on exercise, I learn how to import and wrangling geospatial data using appropriate R packages.
 
-## Getting Started
+## 2 Getting Started
 
 The code chunk below installs and loads [sf](https://r-spatial.github.io/sf/) and tidyverse packages into R environment.
 
@@ -15,47 +17,47 @@ The code chunk below installs and loads [sf](https://r-spatial.github.io/sf/) an
 pacman::p_load(sf, tidyverse)
 ```
 
-## Importing Geospatial Data
+## 3 Importing Geospatial Data
 
-### Importing polygon feature data
+### 3.1 Importing polygon feature data
 
 ```{r}
 mpsz <- st_read(dsn = "data/geospatial", layer = "MP14_SUBZONE_WEB_PL")
 ```
 
-### Importing polyline feature data in shapefile form
+### 3.2 Importing polyline feature data in shapefile form
 
 ```{r}
 cyclingpath <- st_read(dsn = "data/geospatial", layer = "CyclingPath")
 ```
 
-### Importing GIS data in kml format
+### 3.3 Importing GIS data in kml format
 
 ```{r}
 preschool <- st_read("data/geospatial/pre-schools-location-kml.kml")
 ```
 
-## Checking the Content of A Simple Feature Data Frame
+## 4 Checking the Content of A Simple Feature Data Frame
 
-### Working with *st_geometry()*
+### 4.1 Working with *st_geometry()*
 
 ```{r}
 st_geometry(mpsz)
 ```
 
-### Working with glimpse()
+### 4.2 Working with glimpse()
 
 ```{r}
 glimpse(mpsz)
 ```
 
-### Working with head()
+### 4.3 Working with head()
 
 ```{r}
 head(mpsz, n=5)
 ```
 
-## Plotting the Geospatial Data
+## 5 Plotting the Geospatial Data
 
 ```{r}
 plot(mpsz)
@@ -69,9 +71,9 @@ plot(st_geometry(mpsz))
 plot(mpsz["PLN_AREA_N"])
 ```
 
-## Working with Projection
+## 6 Working with Projection
 
-### Assigning EPSG code to a simple feature data frame
+### 6.1 Assigning EPSG code to a simple feature data frame
 
 ```{r}
 st_crs(mpsz)
@@ -85,15 +87,15 @@ mpsz3414 <- st_set_crs(mpsz, 3414)
 st_crs(mpsz3414)
 ```
 
-### Transforming the projection of preschool from wgs84 to svy21.
+### 6.2 Transforming the projection of preschool from wgs84 to svy21.
 
 ```{r}
 preschool3414 <- st_transform(preschool, crs = 3414)
 ```
 
-## Importing and Converting An Aspatial Data
+## 7 Importing and Converting An Aspatial Data
 
-### Importing the aspatial data
+### 7.1 Importing the aspatial data
 
 ```{r}
 listings <- read_csv("data/aspatial/listings.csv")
@@ -103,7 +105,7 @@ listings <- read_csv("data/aspatial/listings.csv")
 list(listings)
 ```
 
-### Creating a simple feature data frame from an aspatial data frame
+### 7.2 Creating a simple feature data frame from an aspatial data frame
 
 ```{r}
 listings_sf <- st_as_sf(listings, coords = c("longitude","latitude"), crs = 4326) %>%
@@ -114,9 +116,9 @@ listings_sf <- st_as_sf(listings, coords = c("longitude","latitude"), crs = 4326
 glimpse(listings_sf)
 ```
 
-## Geoprocessing with sf package
+## 8 Geoprocessing with sf package
 
-### Buffering
+### 8.1 Buffering
 
 ```{r}
 buffer_cycling <- st_buffer(cyclingpath, dist = 5, nQuadSegs = 30)
@@ -130,7 +132,7 @@ buffer_cycling$AREA <- st_area(buffer_cycling)
 sum(buffer_cycling$AREA)
 ```
 
-### Point-in-polygon count
+### 8.2 Point-in-polygon count
 
 ```{r}
 mpsz3414$`PreSch Count` <- lengths(st_intersects(mpsz3414, preschool3414))
@@ -154,7 +156,7 @@ mpsz3414 <- mpsz3414 %>%
   mutate(`PreSch Density` = `PreSch Count`/Area * 1000000)
 ```
 
-## Exploratory Data Analysis (EDA)
+## 9 Exploratory Data Analysis (EDA)
 
 ```{r}
 hist(mpsz3414$`PreSch Density`)
