@@ -37,7 +37,7 @@ In this in-class data, two geospatial data sets will be used, they are:
 
 First, we are going to import the water point geospatial data (i.e. geo_export) by using the code chunk below.
 
-```{r}
+```{r eval=FALSE}
 wp <- st_read(dsn = "geodata",
               layer = "geo_export",
               crs = 4326) %>%
@@ -46,7 +46,7 @@ wp <- st_read(dsn = "geodata",
 
 Next, write_rds() of readr package is used to save the extracted sf data table (i.e. wp) into an output file in rds data format. The output file is called wp_nga.rds and it is saved in geodata sub-folder.
 
-```{r}
+```{r eval=FALSE}
 write_rds(wp, "geodata/wp_nga.rds")
 ```
 
@@ -54,7 +54,7 @@ write_rds(wp, "geodata/wp_nga.rds")
 
 Now, we are going to import the LGA boundary data into R environment by using the code chunk below.
 
-```{r}
+```{r eval=FALSE}
 nga <- st_read(dsn = "geodata",
                layer = "nga_admbnda_adm2_osgof_20190417",
                crs = 4326)
@@ -66,7 +66,7 @@ nga <- st_read(dsn = "geodata",
 
 In the code chunk below, replace_na() is used to recode all the NA values in status_cle field into Unknown.
 
-```{r}
+```{r eval=FALSE}
 wp_nga <- read_rds("geodata/wp_nga.rds") %>%
   mutate(status_cle = replace_na(status_cle, "Unknown"))
 ```
@@ -75,7 +75,7 @@ wp_nga <- read_rds("geodata/wp_nga.rds") %>%
 
 In the code chunk below, freq() of funModeling package is used to display the distribution of status_cle field in wp_nga.
 
-```{r}
+```{r eval=FALSE}
 freq(data=wp_nga, 
      input = 'status_cle')
 ```
@@ -88,7 +88,7 @@ In this section, we will extract the water point records by using classes in sta
 
 In the code chunk below, filter() of dplyr is used to select functional water points.
 
-```{r}
+```{r eval=FALSE}
 wpt_functional <- wp_nga %>%
   filter(status_cle %in%
            c("Functional", 
@@ -96,7 +96,7 @@ wpt_functional <- wp_nga %>%
              "Functional but needs repair"))
 ```
 
-```{r}
+```{r eval=FALSE}
 freq(data=wpt_functional, 
      input = 'status_cle')
 ```
@@ -105,7 +105,7 @@ freq(data=wpt_functional,
 
 In the code chunk below, filter() of dplyr is used to select non-functional water points.
 
-```{r}
+```{r eval=FALSE}
 wpt_nonfunctional <- wp_nga %>%
   filter(status_cle %in%
            c("Abandoned/Decommissioned", 
@@ -115,7 +115,7 @@ wpt_nonfunctional <- wp_nga %>%
              "Non-Functional due to dry season"))
 ```
 
-```{r}
+```{r eval=FALSE}
 freq(data=wpt_nonfunctional, 
      input = 'status_cle')
 ```
@@ -124,14 +124,14 @@ freq(data=wpt_nonfunctional,
 
 In the code chunk below, filter() of dplyr is used to select water points with unknown status.
 
-```{r}
+```{r eval=FALSE}
 wpt_unknown <- wp_nga %>%
   filter(status_cle == "Unknown")
 ```
 
 ## 6 Performing Point-in-Polygon Count
 
-```{r}
+```{r eval=FALSE}
 nga_wp <- nga %>% 
   mutate(`total wpt` = lengths(
     st_intersects(nga, wp_nga))) %>%
@@ -145,7 +145,7 @@ nga_wp <- nga %>%
 
 ## 7 Saving the Analytical Data Table
 
-```{r}
+```{r eval=FALSE}
 nga_wp <- nga_wp %>%
   mutate(pct_functional = `wpt functional`/`total wpt`) %>%
   mutate(`pct_non-functional` = `wpt non-functional`/`total wpt`) %>%
@@ -160,7 +160,7 @@ Things to learn from the code chunk above:
 
 Now, you have the tidy sf data table subsequent analysis. We will save the sf data table into rds format.
 
-```{r}
+```{r eval=FALSE}
 write_rds(nga_wp, "geodata/nga_wp.rds")
 ```
 
