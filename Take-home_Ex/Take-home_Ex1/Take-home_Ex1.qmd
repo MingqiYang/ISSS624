@@ -1,0 +1,199 @@
+---
+title: "Take-home Exercise 1: Geospatial Analytics for Social Good"
+editor: visual
+---
+
+## 1 Overview
+
+Water is an important resource to mankind. Clean and accessible water is critical to human health. It provides a healthy environment, a sustainable economy, reduces poverty and ensures peace and security. Yet over 40% of the global population does not have access to sufficient clean water. By 2025, 1.8 billion people will be living in countries or regions with absolute water scarcity, according to UN-Water. The lack of water poses a major threat to several sectors, including food security. Agriculture uses about 70% of the world's accessible freshwater.
+
+Developing countries are most affected by water shortages and poor water quality. Up to 80% of illnesses in the developing world are linked to inadequate water and sanitation. Despite technological advancement, providing clean water to the rural community is still a major development issues in many countries globally, especially countries in the Africa continent.
+
+To address the issue of providing clean and sustainable water supply to the rural community, a global Water Point Data Exchange (WPdx) project has been initiated. The main aim of this initiative is to collect water point related data from rural areas at the water point or small water scheme level and share the data via WPdx Data Repository, a cloud-based data library. What is so special of this project is that data are collected based on WPDx Data Standard.
+
+Geospatial analytics hold tremendous potential to address complex problems facing society. In this study, we apply appropriate global and local measures of spatial Association techniques to reveals the spatial patterns of Not Functional water points. For the purpose of this study, Nigeria will be used as the study country.
+
+## 2 Getting Started
+
+In the code chunk below, p_load() of pacman package is used to install and load the following R packages into R environment:
+
+-   sf,
+
+-   tidyverse,
+
+-   tmap,
+
+-   spdep, and
+
+-   funModeling will be used for rapid Exploratory Data Analysis
+
+```{r}
+pacman::p_load(sf, tidyverse, tmap, spdep, funModeling)
+```
+
+## 3 Data Preparation
+
+### 3.1 Importing Geospatial Data
+
+In this in-class data, two geospatial data sets will be used, they are:
+
+-   geo_export
+
+-   nga_admbnda_adm2_osgof_20190417
+
+#### 3.1.1 Importing water point geospatial data
+
+First, we are going to import the water point geospatial data (i.e. geo_export) by using the code chunk below.
+
+Note that in this exercise we use **EPSG** **26391**.
+
+```{r eval=FALSE}
+wp <- st_read(dsn = "geodata",
+              layer = "geo_export") %>%
+  filter(clean_coun == "Nigeria")
+wp <- wp %>%
+  st_transform(crs = 26391)
+```
+
+Next, write_rds() of readr package is used to save the extracted sf data table (i.e. wp) into an output file in rds data format. The output file is called wp_nga.rds and it is saved in geodata sub-folder.
+
+```{r eval=FALSE}
+write_rds(wp, "geodata/wp_nga.rds")
+```
+
+#### 3.1.2 Importing Nigeria LGA boundary data
+
+Now, we are going to import the LGA boundary data into R environment by using the code chunk below.
+
+Note that in this exercise we use **EPSG** **26391**.
+
+```{r eval=FALSE}
+nga <- st_read(dsn = "geodata",
+               layer = "nga_admbnda_adm2_osgof_20190417") %>%
+  st_transform(crs = 26391)
+```
+
+### 3.2 Data Wrangling
+
+#### 3.2.1 Recoding NA values into string
+
+In the code chunk below, replace_na() is used to recode all the NA values in status_cle field into Unknown.
+
+```{r eval=FALSE}
+wp_nga <- read_rds("geodata/wp_nga.rds") %>%
+  mutate(status_cle = replace_na(status_cle, "Unknown"))
+```
+
+In the code chunk below, freq() of funModeling package is used to display the distribution of status_cle field in *current* wp_nga.
+
+```{r eval=FALSE}
+freq(data=wp_nga, 
+     input = 'status_cle')
+```
+
+#### 3.2.2 Extracting Water Point Data
+
+In this section, we will extract the water point records by using classes in status_cle field.
+
+##### 3.2.2.1 Extracting functional water point
+
+In the code chunk below, filter() of dplyr is used to select functional water points.
+
+```{r eval=FALSE}
+wpt_functional <- wp_nga %>%
+  filter(status_cle %in%
+           c("Functional", 
+             "Functional but not in use",
+             "Functional but needs repair"))
+```
+
+```{r eval=FALSE}
+freq(data=wpt_functional, 
+     input = 'status_cle')
+```
+
+##### 3.2.2.2 Extracting non-functional water point
+
+In the code chunk below, filter() of dplyr is used to select non-functional water points.
+
+```{r eval=FALSE}
+wpt_nonfunctional <- wp_nga %>%
+  filter(status_cle %in%
+           c("Abandoned/Decommissioned", 
+             "Abandoned",
+             "Non-Functional",
+             "Non functional due to dry season",
+             "Non-Functional due to dry season"))
+```
+
+```{r eval=FALSE}
+freq(data=wpt_nonfunctional, 
+     input = 'status_cle')
+```
+
+#### 3.2.3 Performing Point-in-Polygon Count
+
+Transforming the projection of wp_nga, wpt_functional and wpt_nonfunctional from EPSG:4326 to EPSG:26391.
+
+```{r eval=FALSE}
+wp_nga <- wp_nga %>%
+  st_transform(crs = 26391)
+```
+
+```{r eval=FALSE}
+wpt_functional <- wpt_functional %>%
+  st_transform(crs = 26391)
+```
+
+```{r eval=FALSE}
+wpt_nonfunctional <- wpt_nonfunctional %>%
+  st_transform(crs = 26391)
+```
+
+```{r eval=FALSE}
+nga_wp <- nga %>% 
+  mutate(`total wpt` = lengths(
+    st_intersects(nga, wp_nga))) %>%
+  mutate(`wpt functional` = lengths(
+    st_intersects(nga, wpt_functional))) %>%
+  mutate(`wpt non-functional` = lengths(
+    st_intersects(nga, wpt_nonfunctional)))
+```
+
+```{r eval=FALSE}
+glimpse(nga_wp)
+```
+
+```{r eval=FALSE}
+hist(nga_wp$`wpt non-functional`)
+```
+
+#### 3.2.4 Saving the Analytic Data Table
+
+```{r eval=FALSE}
+nga_wp <- nga_wp %>%
+  mutate(pct_functional = `wpt functional`/`total wpt`) %>%
+  mutate(`pct_non-functional` = `wpt non-functional`/`total wpt`)
+```
+
+Things to learn from the code chunk above:
+
+-   mutate() of dplyr package is used to derive two fields namely pct_functional and pct_non-functional.
+
+Now, you have the tidy sf data table subsequent analysis. We will save the sf data table into rds format.
+
+```{r eval=FALSE}
+write_rds(nga_wp, "geodata/nga_wp.rds")
+```
+
+Before you end this section, please remember to delete away all the raw data. Notice that the only data file left is nga_wp.rds and it's file size is aroung 2.1MB.
+
+### 3.3 Visualising the spatial dsitribution of water points
+
+```{r}
+nga_wp <- read_rds("geodata/nga_wp.rds")
+wp_functional <- qtm(nga_wp, "wpt functional")
+wp_nonfunctional <- qtm(nga_wp, "wpt non-functional")
+
+tmap_arrange(wp_functional, wp_nonfunctional, asp=1, ncol=2)
+```
