@@ -2,6 +2,4 @@
 title: "About"
 ---
 
-**Welcome to ISSS624 Geospatial Analytics Applications!**
-
-**In this webpage, I am going to share with you my learning journey of geospatial analytics.**
+Welcome to Geospatial Data Science and Analytics with R. This book aims to share with you the theory, the methods and the R tools specially designed to meet the challenges of analysing geographic problems and data.

@@ -1,6 +1,10 @@
 ---
 title: "Hands-on Exercise 3"
 editor: visual
+date: "`r Sys.Date()`"
+execute: 
+  warning: false
+  message: false
 ---
 
 # Chapter 5: Geographical Segmentation with Spatially Constrained Clustering Techniques

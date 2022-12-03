@@ -1,0 +1,12 @@
+---
+title: "In-class Exercise 3"
+editor: visual
+date: "`r Sys.Date()`"
+execute: 
+  warning: false
+  message: false
+---
+
+## 1 Overview
+
+In this exercise,

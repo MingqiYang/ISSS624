@@ -1,6 +1,10 @@
 ---
 title: "Take-home Exercise 1: Geospatial Analytics for Social Good"
 editor: visual
+date: "`r Sys.Date()`"
+execute: 
+  warning: false
+  message: false
 ---
 
 ## 1 Overview
@@ -695,6 +699,6 @@ tmap_arrange(nonfun,
              ncol=2)
 ```
 
-## 8 Conclusion 
+## 8 Conclusion
 
 This project allows us to analyze water points in Nigeria using spatial analysis methods to discover spatial patterns. Throughout the project, we have a clear understanding of geospatial data wrangling, geospatial analysis, visualisation, and geospatial autocorrelation.
